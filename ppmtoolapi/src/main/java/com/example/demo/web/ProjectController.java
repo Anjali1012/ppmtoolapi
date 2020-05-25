@@ -30,18 +30,24 @@ public class ProjectController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 
+	// @GetMapping("/rajpal")
+	// public void test()
+	// {
+	// System.out.println("Im inside test");
+	// }
+
 	@PostMapping("")
 	public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
-
+	
 		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
 		if (errorMap != null)
 			return errorMap;
-
+		System.out.println(project);
 		Project proj = projectService.saveOrUpdateProject(project);
 		return new ResponseEntity<Project>(proj, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/{projectId}")
+	@PostMapping("/{projectId}")
 	public ResponseEntity<?> getProjectById(@PathVariable String projectId) {
 		Project project = projectService.findProjectByIdentifier(projectId);
 		return new ResponseEntity<Project>(project, HttpStatus.OK);
